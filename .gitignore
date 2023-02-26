@@ -100,3 +100,8 @@ diagnostics
 Pipfile
 Pipfile.lock
 .community-operator-dev
+
+!custom-support/agent/Dockerfile
+!custom-support/operator/Dockerfile
+!custom-support/readiness-probe/Dockerfile
+!custom-support/version-post-start-hook/Dockerfile
