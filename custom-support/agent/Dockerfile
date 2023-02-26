@@ -1,14 +1,13 @@
-FROM scratch as base
-
-# ADD scripts/dev/templates/agent/LICENSE /data/LICENSE
+FROM ubuntu:20.04 as base
 
 ARG agent_version="12.0.15.7646-1"
 ARG agent_distro="amzn2_aarch64"
 ARG tools_distro="ubuntu1604-x86_64"
 ARG tools_version="100.6.0"
 
-ADD https://mciuploads.s3.amazonaws.com/mms-automation/mongodb-mms-build-agent/builds/automation-agent/prod/mongodb-mms-automation-agent-${agent_version}.${agent_distro}.tar.gz /data/mongodb-agent.tar.gz
+RUN apt-get update && apt install -y curl
 ADD https://downloads.mongodb.org/tools/db/mongodb-database-tools-${tools_distro}-${tools_version}.tgz /data/mongodb-tools.tgz
+RUN if [ "$TARGETPLATFORM" = "amd64" ] ; then https://mciuploads.s3.amazonaws.com/mms-automation/mongodb-mms-build-agent/builds/automation-agent/prod/mongodb-mms-automation-agent-${agent_version}.linux_x86_64.tar.gz -o /data/mongodb-agent.tar.gz ; else curl https://mciuploads.s3.amazonaws.com/mms-automation/mongodb-mms-build-agent/builds/automation-agent/prod/mongodb-mms-automation-agent-${agent_version}.amzn2_aarch64.tar.gz -o /data/mongodb-agent.tar.gz ; fi 
 
 FROM ubuntu:20.04
 
